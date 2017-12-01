@@ -7,6 +7,8 @@ OleOle application : Try and run using python 2.7
 `virtualenv venv`</br>
 In case you do not have `virtualenv` installed, run `pip install virtualenv`
 
+2. Activate your virtual environment : `source activate venv`
+
 2. To run this application install the requirements in a virtual environment:
 `pip install -r requirements.txt`
 
