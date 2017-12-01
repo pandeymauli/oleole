@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Create Sports Room</title>
+    </head>
+    <body>
+        <h1>Sports Room</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {% for message in get_flashed_messages() %}
+            {{ message }}
+            {% endfor %}
+            </br>
+            {{ form.name.label }}: {{ form.name() }}<br>
+            {{ form.side.label }}: {{ form.side() }}<br>
+            {{ form.submit() }}
+        </form>
+    </body>
+</html>
