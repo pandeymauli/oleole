@@ -3,9 +3,9 @@ from . import main
 from .forms import CreateRoomForm, JoinRoomForm, StartStreamingForm
 
 
-# @main.route('/')
-# def index():
-#     return 'Hello_World'
+@main.route('/')
+def hom():
+    return render_template('home.html')
 
 @main.route('/create-room', methods=['GET','POST'])
 def createRoom():
