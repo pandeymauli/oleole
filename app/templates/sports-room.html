@@ -1,8 +1,13 @@
 <html>
     <head>
         <title>Flask-SocketIO-Chat: {{ room }}</title>
-        <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+        <meta charset='utf-8'>
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.emojipicker.css">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.emojipicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.emojipicker.tw.css">
+        <script type="text/javascript" src="/static/js/jquery.emojis.js"></script>
         <script type="text/javascript" charset="utf-8">
             var socket;
             $(document).ready(function(){
@@ -18,15 +23,44 @@
                     $('#chat').val($('#chat').val() + data.msg + '\n');
                     $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 });
-                $('#text').keypress(function(e) {
+
+                $('#input-default').emojiPicker();
+
+                $('#input-custom-size').emojiPicker({
+                  width: '300px',
+                  height: '200px'
+                });
+
+                $('#input-left-position').emojiPicker({
+                  position: 'left'
+                });
+
+                // keyup event is fired
+                $(".emojiable-question, .emojiable-option").on("keyup", function () {
+                  //console.log("emoji added, input val() is: " + $(this).val());
+                });
+
+                $('#input-default').keypress(function(e) {
                     var code = e.keyCode || e.which;
                     if (code == 13) {
-                        text = $('#text').val();
-                        $('#text').val('');
+                        text = $('#input-default').val();
+                        $('#input-default').val('');
                         socket.emit('text', {msg: text});
                     }
                 });
-            });
+
+                // $('.emoji').click(function(e){
+                //   var emojiFile = $(this).find('img').attr('src');
+                //   var emojiName = ':'+emojiFile.slice(8, emojiFile.indexOf('.'))+':';
+                //   // console.log(emojiName)
+                //   // console.log($('#text').val() + ' ' + emojiName);
+                //   // $("#text").text('abcdef');
+                //   // text = $('#text').val();
+                //   $('#input-default').append('<img src="https://cdn.okccdn.com/media/img/emojis/apple/1F60C.png"/>')
+                //   console.log($('#input-default').val());
+                //   socket.emit(text);
+                // });
+              });
             function leave_room() {
                 socket.emit('left', {}, function() {
                     socket.disconnect();
@@ -39,8 +73,18 @@
     </head>
     <body>
         <h1>Flask-SocketIO-Chat: {{ room }}</h1>
-        <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+        <textarea id="chat" contenteditable="true" cols="80" rows="20"></textarea><br><br>
+        <div class="field">
+          <input type="text" id="input-default" class="emojiable-option" placeholder="Default">
+        </div>
+        <ul>
+          <li class = "emoji"><img src="/static/100.png"></li>
+          <li class = "emoji"><img src="/static/+1.png"></li>
+          <li class = "emoji"><img style="width: 25px; height: auto;" src="http://cdn.jsdelivr.net/emojione/assets/svg/263a.svg" data-src="263a" /></li>
+          <li class = "emoji"><img style="width: 25px; height: auto;" src="http://cdn.jsdelivr.net/emojione/assets/svg/1f60a.svg" data-src="1f60a" /></li>
+          <li class = "emoji">&spades;</li>
+          <li class = "emoji">&#9729;</li>
+        </ul>
         <a href="#" onclick="leave_room();">Leave this room</a>
     </body>
 </html>

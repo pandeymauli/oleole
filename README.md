@@ -1,4 +1,4 @@
-Flask-SocketIO-Chat
+OleOle Chat App
 ===================
 
 OleOle application : Try and run using python 2.7
