@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <title> OleOle : {{ room }}</title>
+  <meta charset='utf-8'>
+  <link rel="stylesheet" type="text/css" href="/static/css/jquery.emojipicker.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.emojipicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/jquery.emojipicker.tw.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/chatroom.css">
+  <script type="text/javascript" src="/static/js/jquery.emojis.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Barlow" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
+  <script type="text/javascript" charset="utf-8">
+      var socket;
+      $(document).ready(function(){
+          socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+          socket.on('connect', function() {
+              socket.emit('joined', {});
+          });
+          socket.on('status', function(data) {
+              $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
+              $('#chat').scrollTop($('#chat')[0].scrollHeight);
+          });
+          socket.on('message', function(data) {
+              $('#chat').val($('#chat').val() + data.msg + '\n');
+              $('#chat').scrollTop($('#chat')[0].scrollHeight);
+          });
+
+          $('#input-default').emojiPicker();
+
+          $('#input-custom-size').emojiPicker({
+            width: '300px',
+            height: '200px'
+          });
+
+          $('#input-left-position').emojiPicker({
+            position: 'left'
+          });
+
+          // keyup event is fired
+          $(".emojiable-question, .emojiable-option").on("keyup", function () {
+            //console.log("emoji added, input val() is: " + $(this).val());
+          });
+
+          $('#input-default').keypress(function(e) {
+              var code = e.keyCode || e.which;
+              if (code == 13) {
+                  text = $('#input-default').val();
+                  $('#input-default').val('');
+                  socket.emit('text', {msg: text});
+              }
+          });
+        });
+      function leave_room() {
+          socket.emit('left', {}, function() {
+              socket.disconnect();
+              // go back to the login page
+              window.location.href = "{{ url_for('main.index') }}";
+          });
+      }
+  </script>
+</head>
+<body>
+  <div class = "container-fluid">
+    <div class = "row">
+      <div class = "col-md-9 col-lg-9 video-area">
+        <h3 class = "room-title"> OleOle: {{ room }}</h3>
+        <iframe width="100%" height="100%" src={{ videoURL }} style="border: none;"></iframe>
+      </div>
+
+      <div class = "col-md-3 col-lg-3 chat-area">
+        <textarea id="chat" contenteditable="true" cols="80" rows="20"></textarea><br><br>
+        <div class="field">
+          <input type="text" id="input-default" class="emojiable-option" placeholder="Default">
+        </div>
+        <a href = {{ url_for('.index') }} onclick="leave_room();">Leave this room</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster --> -->
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="/static/js/bootstrap.min.js"></script>
+</body>
+</html>
