@@ -82,14 +82,8 @@
   #chat p{
     margin-bottom: 28px;
   }
-  .team1{
-    color: red;
-  }
-  .team3{
-    color: blue;
-  }
-  .team2{
-    color: grey;
+  .team1, .team2, .team3{
+    color: #eee;
   }
   #chat img, .sendingCard{
     width: 100px;
@@ -105,15 +99,22 @@
     text-align: center;
     font: 20px Arial, sans-serif;
     margin-right: 10px;
+    color: transparent;
   }
   .alias1{
-    border: 1px solid red;
+    border: 1px solid blue;
+    background: url("/static/img/CFC_jersey.png")  no-repeat top left;
+    background-size: cover;
   }
   .alias2{
     border: 1px solid grey;
+    background: url("/static/img/Neutral_jersey.png") no-repeat top left;
+    background-size: cover;
   }
   .alias3{
-    border: 1px solid blue;
+    border: 1px solid red;
+    background: url("/static/img/MUFC_jersey.png")  no-repeat top left;
+    background-size: cover;
   }
   </style>
 </head>
