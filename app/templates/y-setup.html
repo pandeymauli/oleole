@@ -16,22 +16,11 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-     <link href="/static/css/oleole.css" rel="stylesheet">
+     <link href="../static/css/oleole.css" rel="stylesheet">
      <link rel="stylesheet" href="/static/css/font-awesome.min.css">
      <link href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,600,600i" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-     <style>
-     .neutral-circle{
-       display: none;
-     }
-     .media2 label{
-       margin-left: 5px;
-     }
-     body.masthead{
-       background-image: url("/static/img/bg.jpg");
-     }
-     </style>
 </head>
 
 <body class="masthead">
@@ -52,7 +41,6 @@
                   {% for subfield in form.side %}
                       <div class="col-lg-4">
                           <button type="button" class="btn btn-secondary-outline team_options">
-                            <img class="rounded-circle">
                             {{ subfield() }}{{ subfield.label }}
                           </button>
                       </div>
@@ -71,28 +59,12 @@
     <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery.min.js"><\/script>')</script>
     <script>
       $(document).ready(function(){
-        var teamOptions = $('.team_options');
-        for (var i=0; i<teamOptions.length; i++){
-          if(teamOptions[i].childNodes[4].innerHTML == 'CFC'){
-            imgChild = teamOptions[i].childNodes[1];
-            imgChild.src = '/static/img/CFC.jpg';
-            console.log(imgChild);
-          }
-          else if (teamOptions[i].childNodes[4].innerHTML == 'MUFC') {
-            imgChild = teamOptions[i].childNodes[1];
-            imgChild.src = '/static/img/MUFC.jpg';
-          }
-          else{
-            imgChild = teamOptions[i].childNodes[1];
-            //imgChild.src = '/static/img/Neutral.png';
-            imgChild.classList.add('neutral-circle')
-            console.log(imgChild);
-          }
-        }
-
+        $('input:radio').hide();
         $('.team_options').click(function() {
           $(this).find('input:radio').prop('checked', true);
-          console.log('RadioButtonChecked')
+          console.log('RadioButtonChecked');
+          $('.team_options').removeClass('active');
+          $(this).addClass('active');
         })
       })
     </script>
