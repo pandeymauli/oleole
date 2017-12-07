@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+        <title>Pick Sides</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+     <link href="/static/css/oleole.css" rel="stylesheet">
+     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+     <link href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,600,600i" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body class="masthead">
+  <div class="container h-100">
+    <div class="row h-100">
+      <div class="col-lg-12 my-auto onboarding-panel rounded">
+          <h3>PICK A SIDE</h3>
+          <form method = "POST">
+            {{ form.hidden_tag() }}
+            {% for message in get_flashed_messages() %}
+              {{ message }}
+            {% endfor %}
+            <div class="media2" style="padding: 0px 0px 0px 0px">
+                {{ form.name.label }}
+              <div class="input-group input-group-lg">
+                {{ form.name(class_="form-control", id="alias", placeholder="e.g. ChelseaForever") }}
+              </div>
+            </div>
+            <div class="media2" style="padding: 0px 0px 0px 0px">
+                {{ form.side.label }}
+                <div class="row teams">
+                  {% for subfield in form.side %}
+                      <div class="col-lg-4">
+                          <button type="button" class="btn btn-secondary-outline team_options">
+                            <img class="rounded-circle">
+                            {{ subfield() }}{{ subfield.label }}
+                          </button>
+                      </div>
+                    {% endfor %}
+              </div>
+            </div>
+            <div class="media2" style="margin-top: 0px">
+              {{ form.room.label }}
+              <div class="input-group input-group-lg">
+                {{ form.room(class_="form-control", id="streamLink", value=url ) }}
+              </div>
+            </div>
+            <div class="media2-end text-center">
+              <a href="#">{{ form.submit(class_ = "btn btn-primary btn-lg") }}</a>
+            </div>
+          </form>
+       </div>
+    </div>
+  </div>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery.min.js"><\/script>')</script>
+    <script>
+      $(document).ready(function(){
+        var teamOptions = $('.team_options');
+        for (var i=0; i<teamOptions.length; i++){
+          if(teamOptions[i].childNodes[4].innerHTML == 'CFC'){
+            imgChild = teamOptions[i].childNodes[1];
+            imgChild.src = '/static/img/CFC.jpg';
+            console.log(imgChild);
+          }
+          else if (teamOptions[i].childNodes[4].innerHTML == 'MUFC') {
+            imgChild = teamOptions[i].childNodes[1];
+            imgChild.src = '/static/img/MUFC.jpg';
+          }
+          else{
+            imgChild = teamOptions[i].childNodes[4];
+            imgChild.remove();
+          }
+        }
+
+        $('.team_options').click(function() {
+          $(this).find('input:radio').prop('checked', true);
+          console.log('RadioButtonChecked');
+        })
+      })
+    </script>
+</body>
+</html>

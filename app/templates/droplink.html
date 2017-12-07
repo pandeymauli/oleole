@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Drop Link</title>
+    </head>
+    <body>
+        <h1>Create custom room based on YouTube Link</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {% for message in get_flashed_messages() %}
+            {{ message }}
+            {% endfor %}
+            </br>
+            {{ form.videoURL.label }}: {{ form.videoURL() }}<br>
+            {{ form.team1.label }}: {{ form.team1() }}<br>
+            {{ form.team2.label }}: {{ form.team2() }}<br>
+            {{ form.submit() }}
+        </form>
+        <h2>Already have a room link? Enter it <a href = "{{ url_for('.joinRoom') }}">here.</h2>
+    </body>
+</html>

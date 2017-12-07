@@ -11,8 +11,11 @@
             {% endfor %}
             </br>
             {{ form.name.label }}: {{ form.name() }}<br>
-            {{ form.side.label }}: {{ form.side() }}<br>
+            {% if form.side.choices %}
+              {{ form.side.label }}: {{ form.side() }}<br>
+            {% endif %}
             {{ form.submit() }}
         </form>
+        <h2>Already have a room link? Enter it <a href = "{{ url_for('.joinRoom') }}">here.</h2>
     </body>
 </html>

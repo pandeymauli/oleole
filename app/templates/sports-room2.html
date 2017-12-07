@@ -15,6 +15,7 @@
   <script type="text/javascript" src="/static/js/jquery.emojis.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Barlow" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
+  <meta id="my-data" data-name="{{ videoURL }}" data-other="{{ videoURL }}">
   <script type="text/javascript" charset="utf-8">
       var socket;
       $(document).ready(function(){
@@ -55,7 +56,9 @@
                   socket.emit('text', {msg: text});
               }
           });
-        });
+
+      });
+
       function leave_room() {
           socket.emit('left', {}, function() {
               socket.disconnect();
@@ -74,19 +77,63 @@
       </div>
 
       <div class = "col-md-3 col-lg-3 chat-area">
-        <textarea id="chat" contenteditable="true" cols="80" rows="20"></textarea><br><br>
+        <div id="chat" contenteditable="true"></div><br><br>
         <div class="field">
           <input type="text" id="input-default" class="emojiable-option" placeholder="Default">
+        </div>
+        <div class="card" style="display:inline-block">
+          <img src="/static/img/redcard.gif" style="width:60px; height:40px">
         </div>
         <a href = {{ url_for('.index') }} onclick="leave_room();">Leave this room</a>
       </div>
     </div>
   </div>
+  <!-- <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
 
-  <!-- Bootstrap core JavaScript
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster --> -->
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      var url = $('#my-data').data();
+      console.log(url.name);
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: url.name,
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      var done = false;
+      function onPlayerStateChange(event) {
+        console.log(event.data);
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+  </script> -->
+
+  <!-- Placed at the end of the document so the pages load faster -->
   <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
   <script src="/static/js/bootstrap.min.js"></script>
+  <script>
+    $('.card').click(function(){
+      var content = $('#chat').val()
+      $('#chat').val(content + "<img src='/static/img/redcard.gif'>")
+    })
+  </script>
 </body>
 </html>

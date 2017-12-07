@@ -1,14 +1,69 @@
-<html>
-    <head>
-        <title>Flask-SocketIO-Chat</title>
-    </head>
-    <body>
-        <h1>Flask-SocketIO-Chat</h1>
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            {{ form.name.label }}: {{ form.name() }} {% for error in form.name.errors %}{{ error }}{% endfor %}<br>
-            {{ form.room.label }}: {{ form.room() }} {% for error in form.room.errors %}{{ error }}{% endfor %}<br>
-            {{ form.submit() }}
-        </form>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>OleOle</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/oleole.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
+
+    <style>
+      header.masthead{
+          background-image: url("../static/img/bg.jpg");
+      }
+    </style>
+</head>
+
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100">
+      <div class="col-lg-5 my-auto">
+        <div class="device-container">
+            <h3>Featured Matches</h3>
+            <hr>
+            <div>
+              <a href="/setup">Manchester United vs Chelsea</a>
+            </div>
+            <hr>
+            <h3>Currently Live</h3>
+            <hr>
+            <div>
+              {% for live in broadcastList %}
+                  <a href="/create-room">Manchester United vs Chelsea</a>
+              {% endfor %}
+            </div>
+            <hr>
+          <div class="text-center">
+            <a href="/create-room" class="btn btn-outline btn-xl">Start Your Own Room</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 my-auto">
+        <div class="header-content mx-auto">
+          <h1 class="mb-5">Sports should be enjoyed together!</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<body>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</body>
 </html>

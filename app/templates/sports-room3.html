@@ -61,9 +61,12 @@
           });
 
           window.setInterval(function() {
-            var elem = document.getElementById('chat');
-            elem.scrollTop = elem.scrollHeight;
+            var elem = $('#chat');
+            elem.scrollTop(elem[0].scrollHeight);
           }, 1000);
+
+          // $('#chat').animate({
+          //   scrollTop: $('#chat').get(0).scrollHeight}, 2000);
 
       });
 
@@ -76,8 +79,18 @@
       }
   </script>
   <style>
+  body{
+    font-family: 'Barlow', 'Helvetica', 'Arial', 'sans-serif';
+  }
   #chat{
-    overflow: auto
+    overflow-y: auto;
+    padding-left: 10px;
+    border-bottom: 1px solid #555;
+  }
+  .video-area h3{
+    font-size: 1.6em;
+    color: grey;
+    margin-top: 10px;
   }
   #chat p{
     margin-bottom: 28px;
@@ -91,30 +104,76 @@
   }
   .alias1, .alias2, .alias3{
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    padding: 10px 13px;
+    width: 26px;
+    height: 26px;
+    padding: 8px 12px;
     border: 1px solid grey;
     color: blue;
     text-align: center;
     font: 20px Arial, sans-serif;
     margin-right: 10px;
-    color: transparent;
   }
   .alias1{
-    border: 1px solid blue;
-    background: url("/static/img/CFC_jersey.png")  no-repeat top left;
+    background: url('/static/img/CFC_jersey.png') no-repeat top left;
+    border: 0px solid #034694;
     background-size: cover;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: transparent;
   }
   .alias2{
-    border: 1px solid grey;
-    background: url("/static/img/Neutral_jersey.png") no-repeat top left;
+    border: 0px solid grey;
     background-size: cover;
+    background-color: rgba(128, 128, 128, 1);
+    color: black;
   }
   .alias3{
-    border: 1px solid red;
-    background: url("/static/img/MUFC_jersey.png")  no-repeat top left;
+    background: url('/static/img/MUFC_jersey.png') no-repeat top left;
+    border: 0px solid #DA020E;
     background-size: cover;
+    background-color: rgba(255, 229, 0, 1);
+    color: transparent;
+  }
+  .leaveButton{
+    font-size: 1.6em;
+    text-align: : right;
+    border-bottom: 1px solid #555;
+    padding-bottom: 16px;
+    width: 100%;
+  }
+  .leaveButton a{
+    float: right;
+    margin-top: 5px;
+    color: #fdcc52;
+  }
+  .leaveButton a:hover{
+    color: #fdcc52;
+    text-decoration: underline;
+  }
+  .chat-area{
+    border-left: 1px solid #666;
+    padding-left: 10px;
+  }
+  .card{
+    background-color: transparent;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+  }
+  .cardGIF{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+  }
+  .emojiPickerIconWrap{
+    width: 100%;
+  }
+  .emojiable-option{
+    width: 90%;
+    height: 40px;
+  }
+  #input-default{
+    font-size: 1.6em;
   }
   </style>
 </head>
@@ -122,19 +181,26 @@
   <div class = "container-fluid">
     <div class = "row">
       <div class = "col-md-9 col-lg-9 video-area">
-        <h3 class = "room-title"> OleOle: {{ room }}</h3>
-        <iframe width="100%" height="100%" src={{ videoURL }} style="border: none;"></iframe>
+        <h3 class = "room-title"> Room Code: {{ room }}</h3>
+        <iframe src={{ videoURL }} name=“frame” scrolling=“no” frameborder=“no” id="player" align=“center” height="100%" width="100%">
+</iframe>
       </div>
 
       <div class = "col-md-3 col-lg-3 chat-area">
-        <div id="chat" style="height:600px;"></div><br><br>
+        <div class="leaveButton">
+          <a href = {{ url_for('.index') }} onclick="leave_room();">Leave Room</a>
+          </br>
+        </div>
+        <div id="chat" style="height:550px;"></div>
+        <div class="card">
+          <img class="cardGIF" src="/static/img/redcard.gif" style="height:40px; width: 60px;">
+          <img class="cardGIF" src="/static/img/slice.gif" style="height:40px; width:60px; ">
+          <img class="cardGIF" src="/static/img/ronaldo.gif" style="height:40px; width:60px; ">
+          <img class="cardGIF" src="/static/img/crush.gif" style="height:40px; width:60px; ">
+        </div>
         <div class="field">
-          <input type="text" id="input-default" class="emojiable-option" placeholder="Default">
+          <input type="text" id="input-default" class="emojiable-option" placeholder="Cheer your team...">
         </div>
-        <div class="card" style="display:inline-block">
-          <img src="/static/img/redcard.gif" style="width:60px; height:40px">
-        </div>
-        <a href = {{ url_for('.index') }} onclick="leave_room();">Leave this room</a>
       </div>
     </div>
   </div>
@@ -143,11 +209,14 @@
   <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
   <script src="/static/js/bootstrap.min.js"></script>
   <script>
-    $('.card').click(function(){
+    $('.cardGIF').click(function(){
       var content = $('#chat').text();
-      socket.emit('text', {msg: " <img class='sendingCard' src='/static/img/redcard.gif'>"});
+      var urlGIF = '/static/img/'+this.src.slice(this.src.indexOf('img')+4);
+      console.log(urlGIF)
+      socket.emit('text', {msg: " <img class='sendingCard' src='" + urlGIF + "'>"});
       //$('#chat').append("<img class='sendingCard' src='/static/img/redcard.gif'>")
     })
+
   </script>
 </body>
 </html>
