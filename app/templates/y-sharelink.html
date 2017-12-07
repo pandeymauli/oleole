@@ -21,21 +21,12 @@
         <![endif]-->
 
     <!-- Custom styles for this template -->
-     <link href="/static/css/oleole.css" rel="stylesheet">
-     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+     <link href="../static/css/oleole.css" rel="stylesheet">
+     <link rel="stylesheet" href="../static/css/font-awesome.min.css">
      <link href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,600,600i" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-     <style>
-       body.masthead{
-         background-image: url("/static/img/bg.jpg");
-       }
-       #submit{
-         background-color: #007bff;
-         border: transparent;
-         padding: 10px;
-       }
-     </style>
+
 
 </head>
 
@@ -45,15 +36,19 @@
       <div class="col-lg-12 my-auto onboarding-panel rounded">
           <h3>INVITE YOUR FRIENDS</h3>
           <div class="media2" style="margin-top: 60px">
-            <label for="streamLink">Share this room link with your friends</label>
+            <label for="streamLink">Share this room code with whoever you want to watch the match with</label>
             <div class="input-group input-group-lg">
               <input type="text" class="form-control" id="streamLink" value="{{ url }}">
+              <span class="input-group-btn">
+                <button id="copyButton" class="btn btn-secondary" type="button"><i class="fa fa-files-o"></i></button>
+              </span>
             </div>
+            <br><span id="msg"></span><br>
           </div>
           <div class="media2-end text-center" style="margin-top: 76px">
             <a href="">
               <form method="POST" action='{{ url_for('.chat') }}'>
-                {{ form.submit(class_="btn btn-secondary") }}
+                {{ form.submit(class_="btn btn-primary btn-lg") }}
               </form>
           </a>
          </div>
@@ -65,5 +60,78 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script>
+    document.getElementById("copyButton").addEventListener("click", function() {
+      copyToClipboardMsg(document.getElementById("streamLink"), "msg");
+    });
+    function copyToClipboardMsg(elem, msgElem) {
+    	  var succeed = copyToClipboard(elem);
+        var msg;
+        if (!succeed) {
+            msg = "Copy not supported or blocked.  Press Ctrl+c to copy."
+        } else {
+            msg = "Text copied to the clipboard."
+        }
+        if (typeof msgElem === "string") {
+            msgElem = document.getElementById(msgElem);
+        }
+        msgElem.innerHTML = msg;
+        setTimeout(function() {
+            msgElem.innerHTML = "";
+        }, 2000);
+    }
+
+    function copyToClipboard(elem) {
+    	  // create hidden text element, if it doesn't already exist
+        var targetId = "_hiddenCopyText_";
+        var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+        var origSelectionStart, origSelectionEnd;
+        if (isInput) {
+            // can just use the original source element for the selection and copy
+            target = elem;
+            origSelectionStart = elem.selectionStart;
+            origSelectionEnd = elem.selectionEnd;
+        } else {
+            // must use a temporary form element for the selection and copy
+            target = document.getElementById(targetId);
+            if (!target) {
+                var target = document.createElement("textarea");
+                target.style.position = "absolute";
+                target.style.left = "-9999px";
+                target.style.top = "0";
+                target.id = targetId;
+                document.body.appendChild(target);
+            }
+            target.textContent = elem.textContent;
+        }
+        // select the content
+        var currentFocus = document.activeElement;
+        target.focus();
+        target.setSelectionRange(0, target.value.length);
+
+        // copy the selection
+        var succeed;
+        try {
+        	  succeed = document.execCommand("copy");
+        } catch(e) {
+            succeed = false;
+        }
+        // restore original focus
+        if (currentFocus && typeof currentFocus.focus === "function") {
+            currentFocus.focus();
+        }
+
+        if (isInput) {
+            // restore prior selection
+            elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+        } else {
+            // clear temporary content
+            target.textContent = "";
+        }
+        return succeed;
+    }
+
+
+    </script>
 </body>
 </html>
