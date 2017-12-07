@@ -77,6 +77,11 @@ section {
   height:90px;
   border-top: 0.25px solid #F2F2F2;
 }
+.media:hover {
+  /*opacity: 0.5;*/
+  padding: 16px 0px 16px 16px;
+  background-color: #F2F2F2;
+}
 .media img{
   width: 80px;
   height:58px;
@@ -127,6 +132,7 @@ body.masthead {
   padding-top: 6%;
   padding-bottom: 100px;
   color: black;
+  background: url('../img/bg.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -140,6 +146,9 @@ body.masthead .body-content {
 body.masthead .body-content h1 {
   font-size: 60px;
   font-weight: 600;
+}
+body.masthead .body-content img {
+    width: 100%;
 }
   @media (max-width: 768px) {
     body.masthead {
@@ -266,4 +275,10 @@ footer {
   font-size: 16px;
   font-weight: 500;
   padding: 10px 30px;
+}
+.team_options label{
+  margin-botton:0px;
+}
+input[type="radio"]{
+  visbility:hidden;
 }
