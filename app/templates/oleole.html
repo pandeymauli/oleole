@@ -16,15 +16,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
         <!-- Custom styles for this template -->
-         <link href="/static/css/oleole.css" rel="stylesheet">
+         <link href="../static/css/oleole.css" rel="stylesheet">
          <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
          <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
-
-    <style>
-      body.masthead{
-        background-image: url("/static/img/bg.jpg");
-      }
-    </style>
+         <link href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,600,600i" rel="stylesheet">
 
 </head>
 
@@ -33,37 +28,38 @@
     <div class="row h-100">
       <div class="col-lg-5 my-auto listing-block rounded">
           <h3>Featured</h3>
-        <div class="media">
-            <img class="d-flex align-self-start rounded" src="https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?h=350&auto=compress&cs=tinysrgb" alt="Generic placeholder image">
+        <div class="media" id="featured">
+            <img class="d-flex align-self-start rounded" src="../static/img/game_thumbnail1.jpg">
               <div class="team">
+                  <a href="{{ url_for('.featuredRoomSetup') }}"></a>
                   <p>Chelsea</p>
                   <p> Manchester United</p>
               </div>
               <div class="status">
-                  <a href="{{ url_for('.featuredRoomSetup') }}"><p>Now</p></a>
+                  <p>Now</p>
               </div>
           </div>
           <div class="media-title">
             <h3>Other Matches</h3>
           </div>
           <div class="media">
-              <img class="d-flex align-self-start rounded" src="https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?h=350&auto=compress&cs=tinysrgb" alt="Generic placeholder image">
+              <img class="d-flex align-self-start rounded" src="../static/img/game_thumbnail2.jpg">
                 <div class="team">
-                    <p>Chelsea</p>
-                    <p> Manchester United</p>
+                    <p>Arsenal</p>
+                    <p>BATE Borisov</p>
                 </div>
                 <div class="status">
                     <p>Now</p>
                 </div>
             </div>
             <div class="media">
-                <img class="d-flex align-self-start rounded" src="https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?h=350&auto=compress&cs=tinysrgb" alt="Generic placeholder image">
+                <img class="d-flex align-self-start rounded" src="../static/img/game_thumbnail3.jpg">
                   <div class="team">
-                      <p>Chelsea</p>
-                      <p> Manchester United</p>
+                      <p>Hapoel Beer-Sheva</p>
+                      <p>Viktoria Plzen</p>
                   </div>
                   <div class="status">
-                      <p>Now</p>
+                      <p>12:15PM</p>
                   </div>
               </div>
               <div class="media-end text-center">
@@ -72,6 +68,7 @@
            </div>
       <div class="col-lg-7 my-auto">
         <div class="body-content mx-auto">
+          <img src="../static/img/logo.png">
           <h1 class="mb-5">Sports should be enjoyed together!</h1>
         </div>
       </div>
@@ -84,6 +81,10 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script>
+        $("#featured").click(function() {
+          window.location = $(this).find("a").attr("href");
+          return false;
+        });
     </script>
 </body>
 </html>
