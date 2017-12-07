@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <title> OleOle : {{ room }}</title>
+  <meta charset='utf-8'>
+  <link rel="stylesheet" type="text/css" href="/static/css/jquery.emojipicker.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.emojipicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/css/jquery.emojipicker.tw.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/chatroom.css">
+  <script type="text/javascript" src="/static/js/jquery.emojis.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Barlow" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
+  <meta id="my-data" data-name="{{ videoURL }}" data-other="{{ videoURL }}">
+  <script type="text/javascript" charset="utf-8">
+      var socket;
+      $(document).ready(function(){
+          socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+          socket.on('connect', function() {
+              socket.emit('joined', {});
+          });
+          socket.on('status', function(data) {
+              console.log('status',data);
+              var elementClass = 'team'+data.side;
+              $('#chat').append("<p class='"+elementClass+"'>"+data.msg+"</p>");;
+          });
+          socket.on('message', function(data) {
+            console.log('message',data);
+            var elementClass = 'team'+data.side;
+            var aliasClass = 'alias'+data.side;
+            $('#chat').append("<p><span class='" + aliasClass + "'>" + data.alias + "</span><span class='"+elementClass+"'>"+data.msg+"</span></p>");
+          });
+
+          $('#input-default').emojiPicker();
+
+          $('#input-custom-size').emojiPicker({
+            width: '300px',
+            height: '200px'
+          });
+
+          $('#input-left-position').emojiPicker({
+            position: 'left'
+          });
+
+          // keyup event is fired
+          $(".emojiable-question, .emojiable-option").on("keyup", function () {
+            //console.log("emoji added, input val() is: " + $(this).val());
+          });
+
+          $('#input-default').keypress(function(e) {
+              var code = e.keyCode || e.which;
+              if (code == 13) {
+                  text = $('#input-default').val();
+                  $('#input-default').val('');
+                  socket.emit('text', {msg: text});
+              }
+          });
+
+          window.setInterval(function() {
+            var elem = $('#chat');
+            elem.scrollTop(elem[0].scrollHeight);
+          }, 1000);
+
+          // $('#chat').animate({
+          //   scrollTop: $('#chat').get(0).scrollHeight}, 2000);
+
+      });
+
+      function leave_room() {
+          socket.emit('left', {}, function() {
+              socket.disconnect();
+              // go back to the login page
+              window.location.href = "{{ url_for('main.index') }}";
+          });
+      }
+  </script>
+  <style>
+  body{
+    font-family: 'Barlow', 'Helvetica', 'Arial', 'sans-serif';
+  }
+  #chat{
+    overflow-y: auto;
+    padding-left: 10px;
+    border-bottom: 1px solid #555;
+  }
+  .video-area h3{
+    font-size: 1.6em;
+    color: grey;
+    margin-top: 10px;
+  }
+  #chat p{
+    margin-bottom: 28px;
+  }
+  .team1, .team2, .team3{
+    color: #eee;
+  }
+  #chat img, .sendingCard{
+    width: 100px;
+    height: auto;
+  }
+  .alias1, .alias2, .alias3{
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    padding: 8px 12px;
+    border: 1px solid grey;
+    color: blue;
+    text-align: center;
+    font: 20px Arial, sans-serif;
+    margin-right: 10px;
+  }
+  .alias1{
+    background: url('/static/img/CFC_jersey.png') no-repeat top left;
+    border: 0px solid #034694;
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: transparent;
+  }
+  .alias2{
+    border: 0px solid grey;
+    background-size: cover;
+    background-color: rgba(128, 128, 128, 1);
+    color: black;
+  }
+  .alias3{
+    background: url('/static/img/MUFC_jersey.png') no-repeat top left;
+    border: 0px solid #DA020E;
+    background-size: cover;
+    background-color: rgba(255, 229, 0, 1);
+    color: transparent;
+  }
+  .leaveButton{
+    font-size: 1.6em;
+    text-align: : right;
+    border-bottom: 1px solid #555;
+    padding-bottom: 16px;
+    width: 100%;
+  }
+  .leaveButton a{
+    float: right;
+    margin-top: 5px;
+    color: #fdcc52;
+  }
+  .leaveButton a:hover{
+    color: #fdcc52;
+    text-decoration: underline;
+  }
+  .chat-area{
+    border-left: 1px solid #666;
+    padding-left: 10px;
+  }
+  .card{
+    background-color: transparent;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+  }
+  .cardGIF{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+  }
+  .emojiPickerIconWrap{
+    width: 100%;
+  }
+  .emojiable-option{
+    width: 90%;
+    height: 40px;
+  }
+  #input-default{
+    font-size: 1.6em;
+  }
+  </style>
+</head>
+<body>
+  <div class = "container-fluid">
+    <div class = "row">
+      <div class = "col-md-9 col-lg-9 video-area">
+        <h3 class = "room-title"> Room Code: {{ room }}</h3>
+        <iframe src={{ videoURL }} name=“frame” scrolling=“no” frameborder=“no” id="player" align=“center” height="100%" width="100%">
+</iframe>
+      </div>
+
+      <div class = "col-md-3 col-lg-3 chat-area">
+        <div class="leaveButton">
+          <a href = {{ url_for('.index') }} onclick="leave_room();">Leave Room</a>
+          </br>
+        </div>
+        <div id="chat" style="height:550px;"></div>
+        <div class="card">
+          <img class="cardGIF" src="/static/img/redcard.gif" style="height:40px; width: 60px;">
+          <img class="cardGIF" src="/static/img/slice.gif" style="height:40px; width:60px; ">
+          <img class="cardGIF" src="/static/img/ronaldo.gif" style="height:40px; width:60px; ">
+          <img class="cardGIF" src="/static/img/crush.gif" style="height:40px; width:60px; ">
+        </div>
+        <div class="field">
+          <input type="text" id="input-default" class="emojiable-option" placeholder="Cheer your team...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script>
+    $('.cardGIF').click(function(){
+      var content = $('#chat').text();
+      var urlGIF = '/static/img/'+this.src.slice(this.src.indexOf('img')+4);
+      console.log(urlGIF)
+      socket.emit('text', {msg: " <img class='sendingCard' src='" + urlGIF + "'>"});
+      //$('#chat').append("<img class='sendingCard' src='/static/img/redcard.gif'>")
+    })
+
+  </script>
+</body>
+</html>

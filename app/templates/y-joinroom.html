@@ -21,6 +21,11 @@
      <link href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,600,600i" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+     <style>
+       body.masthead{
+         background-image: url("/static/img/bg.jpg");
+       }
+     </style>
 </head>
 
 <body class="masthead">
@@ -80,10 +85,12 @@
           else if (teamOptions[i].childNodes[4].innerHTML == 'MUFC') {
             imgChild = teamOptions[i].childNodes[1];
             imgChild.src = '/static/img/MUFC.jpg';
+            console.log(imgChild);
           }
-          else{
+          else if (teamOptions[i].childNodes[4].innerHTML == 'Neutral'){
             imgChild = teamOptions[i].childNodes[4];
-            imgChild.remove();
+            imgChild.src = '/static/img/Neutral.png';
+            console.log(imgChild);
           }
         }
 

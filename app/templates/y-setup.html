@@ -21,6 +21,17 @@
      <link href="https://fonts.googleapis.com/css?family=Barlow:300,300i,400,400i,500,500i,600,600i" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Istok+Web" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+     <style>
+     .neutral-circle{
+       display: none;
+     }
+     .media2 label{
+       margin-left: 5px;
+     }
+     body.masthead{
+       background-image: url("/static/img/bg.jpg");
+     }
+     </style>
 </head>
 
 <body class="masthead">
@@ -72,8 +83,10 @@
             imgChild.src = '/static/img/MUFC.jpg';
           }
           else{
-            imgChild = teamOptions[i].childNodes[4];
-            imgChild.remove();
+            imgChild = teamOptions[i].childNodes[1];
+            //imgChild.src = '/static/img/Neutral.png';
+            imgChild.classList.add('neutral-circle')
+            console.log(imgChild);
           }
         }
 
