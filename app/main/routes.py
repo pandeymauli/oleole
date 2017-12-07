@@ -113,6 +113,7 @@ def featuredRoomSetup():
 @main.route('/sharelink/<url>')
 def roomLink(url):
     form = StartStreamingForm()
+    url = request.url.replace('sharelink','joinroom')
     return render_template('y-sharelink.html', url=url, form=form)
 
 
@@ -125,7 +126,7 @@ def joinRoom(url=''):
         session['name'] = form.name.data
         session['side-chosen'] = form.side.data
         session['room'] = form.room.data
-        print('Before querying', session['room'])
+        print('Before querying', session['room'], form.room.data)
         videoURL = get_room(db.session, session['room'])
         if videoURL:
             session['room'] = form.room.data
